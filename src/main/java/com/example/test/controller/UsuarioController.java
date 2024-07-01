@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -23,12 +25,19 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
+    public ResponseEntity<Object> getUsuarioById(@PathVariable Long id) {
         Optional<Usuario> usuario = usuarioService.findById(id);
         if (usuario.isPresent()) {
+
             return ResponseEntity.ok(usuario.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            // return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Usuario no encontrado con el ID: " + id);
+            // return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
         }
     }
 
